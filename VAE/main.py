@@ -9,7 +9,7 @@ from torchvision import datasets, transforms
 from torchvision.utils import save_image
 
 
-parser = argparse.ArgumentParser(description='VAE MNIST Example')
+parser = argparse.ArgumentParser(description='VAE Tobacco')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
 parser.add_argument('--epochs', type=int, default=10, metavar='N',
@@ -33,8 +33,8 @@ transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTens
 	transforms.Normalize((0.1307,), (0.3081,))])
 
 
-train_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/train", transform=transforms)
-val_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/test", transform=transforms)
+train_dataset = torchvision.datasets.ImageFolder(root="../Datasets/Tobacco/train", transform=transforms)
+val_dataset = torchvision.datasets.ImageFolder(root="../Datasets/Tobacco/test", transform=transforms)
 
 
 train_loader = data.DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True)
