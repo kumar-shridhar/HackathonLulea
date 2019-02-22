@@ -37,9 +37,9 @@ train_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/tr
 val_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/test", transform=transforms)
 
 
-train_loader = data.DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True)
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True)
 
-test_loader = data.DataLoader(dataset=val_dataset, batch_size=args.batch_size, shuffle=False)
+test_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=args.batch_size, shuffle=False)
 
 
 class VAE(nn.Module):
