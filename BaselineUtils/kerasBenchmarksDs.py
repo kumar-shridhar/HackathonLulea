@@ -25,10 +25,10 @@ from sklearn.pipeline import Pipeline
 
 #%%
 
-path = 'C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train/'
+path = 'C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train'
 dirs = listdir(path)
 
-print(dir)
+print(dirs)
 
 # path2 = 'C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train\\ADVE'
 # images = listdir(path2)
@@ -39,24 +39,24 @@ X = []
 y = []
 
 #%%
-# for dir in dirs:
-#     new_path = "C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train\\"+dir+"\\"
-#     # print(new_path) 
-#     imagesList = listdir(new_path)
+for dir in dirs:
+    new_path = "C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train\\" + dir
+    # print(new_path) 
+    imagesList = listdir(new_path)
 
-#     print(new_path)
-#     for imgFile in imagesList:
-#         # print(new_path + imgFile)
-#         image = cv2.imread(new_path + imgFile, -1)
-#         # image = np.float32(image)
-#         # print(image)
+    print(new_path)
+    for imgFile in imagesList:
+        # print(new_path + imgFile)
+        image = cv2.imread(new_path + imgFile, -1)
+        # image = np.float32(image)
+        # print(image)
 
-#         if image is None:
-#             print(new_path + imgFile)
-#         else:
-#             X.append(image)
-#             y.append(dir)
-#     # print(image)
+        if image is None:
+            print(new_path + imgFile)
+        else:
+            X.append(image)
+            y.append(dir)
+    # print(image)
 #%%
 print(len(X))
 print(y[:5])
@@ -101,9 +101,10 @@ print(dummy_y[:4])
 def get_im(path):
     # Load as grayscale
     img = cv2.imread(path, 0)
+    print('path',path)
     # Reduce size
     # print(img)
-    resized = cv2.resize(img, (128, 96))
+    resized = cv2.resize(img, (512, 3*96))
     # print(resized)
     return resized
 #%%
@@ -120,10 +121,14 @@ def load_train():
         # path = os.path.join('..','train', + str(j), '*.jpg')
         # files = glob.glob(path)
         # for fl in files:
-        imagesList = listdir(new_path)
+        imagesList = listdir(path + "\\" + dir)
+        # print('path', path + "\\" + dir + "\\", imagesList)
         # y_train.append(dir)
         for im in imagesList:
-            img = get_im(new_path + im)
+            # print(im)
+            # print('new', path + "\\" + dir + "\\" + im)
+            img = get_im(path + "\\" + dir + "\\" + im)
+            # print('new', path + "\\" + im)
             X_train.append(img)
             y_train.append(dir)
             y_encoded.append(i)
@@ -133,7 +138,9 @@ def load_train():
     return X_train, y_train
 #%%
 train_data, train_target = load_train()
-img_rows, img_cols = 96, 128
+img_rows, img_cols = 3*96, 512
+#%%
+print(train_data[:3])
 #%%
 encoder = LabelEncoder()
 encoder.fit(train_target)
@@ -170,7 +177,7 @@ print(train_data.shape[0], 'train samples')
 
 model = Sequential()
 # model.add(Conv2D())
-model.add(Conv2D(32, (3, 3), input_shape=(96, 128, 1)))
+model.add(Conv2D(32, (3, 3), input_shape=(3*96, 512, 1)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
