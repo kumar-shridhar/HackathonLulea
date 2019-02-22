@@ -29,8 +29,7 @@ device = torch.device("cuda" if args.cuda else "cpu")
 
 kwargs = {'num_workers': 4, 'pin_memory': True} if args.cuda else {}
 
-transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(),
-	transforms.Normalize((0.1307,), (0.3081,))])
+transform = transforms.Compose([transforms.Resize((224, 224)), transforms.Grayscale(), transforms.ToTensor()])
 
 
 train_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/train", transform=transform)
@@ -46,11 +45,11 @@ class VAE(nn.Module):
     def __init__(self):
         super(VAE, self).__init__()
 
-        self.fc1 = nn.Linear(224*224, 400)
-        self.fc21 = nn.Linear(400, 20)
-        self.fc22 = nn.Linear(400, 20)
-        self.fc3 = nn.Linear(20, 400)
-        self.fc4 = nn.Linear(400, 224*224)
+        self.fc1 = nn.Linear(224*224, 768)
+        self.fc21 = nn.Linear(768, 100)
+        self.fc22 = nn.Linear(768, 100)
+        self.fc3 = nn.Linear(100, 768)
+        self.fc4 = nn.Linear(768, 224*224)
 
     def encode(self, x):
         h1 = F.relu(self.fc1(x))
@@ -120,7 +119,7 @@ def test(epoch):
             if i == 0:
                 n = min(data.size(0), 8)
                 comparison = torch.cat([data[:n],
-                                      recon_batch.view(args.batch_size, 3, 224, 224)[:n]])
+                                      recon_batch.view(args.batch_size, 1, 224, 224)[:n]])
                 save_image(comparison.cpu(),
                          'results/reconstruction_' + str(epoch) + '.png', nrow=n)
 
