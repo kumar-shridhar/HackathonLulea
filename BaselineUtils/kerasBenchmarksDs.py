@@ -9,6 +9,7 @@ import numpy as np
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 
 from keras.utils import to_categorical
+from keras.models import save_model
 
 import numpy
 import pandas
@@ -181,17 +182,29 @@ model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
-model.add(Dense(10))
-model.add(Activation('sigmoid'))
+# model.add(Conv2D(32, (3, 3)))
+# model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
+model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+model.add(Dense(500))
+model.add(Activation('relu'))
+model.add(Dropout(0.3))
+
+# model.add(Dense(400))
+# model.add(Activation('relu'))
+# model.add(Dropout(0.3))
+# model.add(Dense(300))
+# model.add(Activation('relu'))
+# model.add(Dropout(0.3))
+
+model.add(Dense(10))
+model.add(Activation('softmax'))
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
               metrics=['accuracy'])
 print(model.summary())
-model.fit(train_data, dummy_y, batch_size=32, epochs=10, verbose=2, validation_split=0.1)
+model.fit(train_data, dummy_y, batch_size=64, epochs=100, verbose=2, validation_split=0.1)
 
 #%%
