@@ -44,7 +44,7 @@ for dir in dirs:
     for imgFile in imagesList:
         # print(new_path + imgFile)
         image = cv2.imread(new_path + imgFile, -1)
-        image = np.float32(image)
+        #image = np.float32(image)
 
         # print(image)
 
