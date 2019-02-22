@@ -26,25 +26,30 @@ torch.manual_seed(args.seed)
 
 device = torch.device("cuda" if args.cuda else "cpu")
 
-kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=True, download=True,
-                   transform=transforms.ToTensor()),
-    batch_size=args.batch_size, shuffle=True, **kwargs)
-test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=False, transform=transforms.ToTensor()),
-    batch_size=args.batch_size, shuffle=True, **kwargs)
+kwargs = {'num_workers': 4, 'pin_memory': True} if args.cuda else {}
+
+transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(),
+	transforms.Normalize((0.1307,), (0.3081,))])
+
+
+train_dataset = torchvision.datasets.ImageFolder(root="../Datasets/Tobacco/train", transform=transforms)
+val_dataset = torchvision.datasets.ImageFolder(root="./Datasets/Tobacco/test", transform=transforms)
+
+
+train_loader = data.DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True)
+
+test_loader = data.DataLoader(dataset=val_dataset, batch_size=args.batch_size, shuffle=False)
 
 
 class VAE(nn.Module):
     def __init__(self):
         super(VAE, self).__init__()
 
-        self.fc1 = nn.Linear(784, 400)
+        self.fc1 = nn.Linear(224*224, 400)
         self.fc21 = nn.Linear(400, 20)
         self.fc22 = nn.Linear(400, 20)
         self.fc3 = nn.Linear(20, 400)
-        self.fc4 = nn.Linear(400, 784)
+        self.fc4 = nn.Linear(400, 224*224)
 
     def encode(self, x):
         h1 = F.relu(self.fc1(x))
