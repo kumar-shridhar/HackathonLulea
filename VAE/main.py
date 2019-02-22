@@ -33,8 +33,8 @@ transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTens
 	transforms.Normalize((0.1307,), (0.3081,))])
 
 
-train_dataset = torchvision.datasets.ImageFolder(root="../Datasets/Tobacco/train", transform=transforms)
-val_dataset = torchvision.datasets.ImageFolder(root="./Datasets/Tobacco/test", transform=transforms)
+train_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/train", transform=transforms)
+val_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/test", transform=transforms)
 
 
 train_loader = data.DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True)
