@@ -59,7 +59,7 @@ if opt.dataset == 'tobacco':
                                    transforms.Grayscale(),
                                    transforms.ToTensor(),
                                ]))
-    nc=3
+    nc=1
 elif opt.dataset == 'lsun':
     dataset = dset.LSUN(root=opt.dataroot, classes=['bedroom_train'],
                         transform=transforms.Compose([
