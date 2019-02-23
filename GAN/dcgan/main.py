@@ -56,7 +56,6 @@ if opt.dataset == 'tobacco':
     dataset = dset.ImageFolder(root=opt.dataroot,
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
-                                   transforms.Grayscale(),
                                    transforms.ToTensor(),
                                ]))
     nc=1
