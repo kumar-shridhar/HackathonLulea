@@ -24,7 +24,6 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 args = parser.parse_args()
 
-torch.cuda.set_device(1)
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 
 torch.manual_seed(args.seed)
@@ -135,6 +134,9 @@ class VAE(nn.Module):
 
 
 model = VAE(nc=1, ngf=224, ndf=224, latent_variable_size=500).to(device)
+
+model = torch.nn.DataParallel(model, device_ids=range(torch.cuda.device_count()))
+    cudnn.benchmark = True
   
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
