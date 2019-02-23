@@ -31,7 +31,7 @@ device = torch.device("cuda" if args.cuda else "cpu")
 
 kwargs = {'num_workers': 4, 'pin_memory': True} if args.cuda else {}
 
-transform = transforms.Compose([transforms.Resize((224, 224)), transforms.Grayscale(), transforms.ToTensor()])
+transform = transforms.Compose([transforms.Resize((256, 256)), transforms.Grayscale(), transforms.ToTensor()])
 
 
 train_dataset = torchvision.datasets.ImageFolder(root="../../Datasets/Tobacco/train", transform=transform)
@@ -133,7 +133,7 @@ class VAE(nn.Module):
         return res, mu, logvar
 
 
-model = VAE(nc=1, ngf=224, ndf=224, latent_variable_size=500).to(device)
+model = VAE(nc=1, ngf=256, ndf=256, latent_variable_size=500).to(device)
 
 model = torch.nn.DataParallel(model, device_ids=range(torch.cuda.device_count()))
   
@@ -142,7 +142,7 @@ optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
 # Reconstruction + KL divergence losses summed over all elements and batch
 def loss_function(recon_x, x, mu, logvar):
-    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 224*224), reduction='sum')
+    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 256*256), reduction='sum')
 
     # see Appendix B from VAE paper:
     # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
@@ -185,7 +185,7 @@ def test(epoch):
             if i == 0:
                 n = min(data.size(0), 8)
                 comparison = torch.cat([data[:n],
-                                      recon_batch.view(args.batch_size, 1, 224, 224)[:n]])
+                                      recon_batch.view(args.batch_size, 1, 256, 256)[:n]])
                 save_image(comparison.cpu(),
                          'results/reconstruction_' + str(epoch) + '.png', nrow=n)
 
@@ -199,6 +199,6 @@ if __name__ == "__main__":
         with torch.no_grad():
             sample = torch.randn(64, 100).to(device)
             sample = model.decode(sample).cpu()
-            save_image(sample.view(64, 1, 224, 224),
+            save_image(sample.view(64, 1, 256, 256),
                        'results/sample_' + str(epoch) + '.png')
 
