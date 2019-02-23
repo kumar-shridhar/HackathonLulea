@@ -133,7 +133,7 @@ class VAE(nn.Module):
         return res, mu, logvar
 
 
-model = VAE(nc=1, ngf=256, ndf=256, latent_variable_size=500).to(device)
+model = VAE(nc=1, ngf=128, ndf=128, latent_variable_size=500).to(device)
 
 model = torch.nn.DataParallel(model, device_ids=range(torch.cuda.device_count()))
   
