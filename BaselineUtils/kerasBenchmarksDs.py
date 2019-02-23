@@ -38,37 +38,37 @@ print(dirs)
 X = []
 y = []
 
-#%%
-for dir in dirs:
-    new_path = "C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train\\" + dir
-    # print(new_path) 
-    imagesList = listdir(new_path)
+# #%%
+# for dir in dirs:
+#     new_path = "C:\\Users\\pedalo\\Documents\\Hackathon2LTU\\Tobacco\\train\\" + dir
+#     # print(new_path) 
+#     imagesList = listdir(new_path)
 
-    print(new_path)
-    for imgFile in imagesList:
-        # print(new_path + imgFile)
-        image = cv2.imread(new_path + imgFile, -1)
-        # image = np.float32(image)
-        # print(image)
+#     print(new_path)
+#     for imgFile in imagesList:
+#         # print(new_path + imgFile)
+#         image = cv2.imread(new_path + imgFile, -1)
+#         # image = np.float32(image)
+#         # print(image)
 
-        if image is None:
-            print(new_path + imgFile)
-        else:
-            X.append(image)
-            y.append(dir)
-    # print(image)
-#%%
-print(len(X))
-print(y[:5])
+#         if image is None:
+#             print(new_path + imgFile)
+#         else:
+#             X.append(image)
+#             y.append(dir)
+#     # print(image)
+# #%%
+# print(len(X))
+# print(y[:5])
 
-encoder = LabelEncoder()
-encoder.fit(y)
-encoded_Y = encoder.transform(y)
-# convert integers to dummy variables (i.e. one hot encoded)
-dummy_y = np_utils.to_categorical(encoded_Y)
-#%%
-print(X[:4])
-print(dummy_y[:4])
+# encoder = LabelEncoder()
+# encoder.fit(y)
+# encoded_Y = encoder.transform(y)
+# # convert integers to dummy variables (i.e. one hot encoded)
+# dummy_y = np_utils.to_categorical(encoded_Y)
+# #%%
+# print(X[:4])
+# print(dummy_y[:4])
 
 #%%
 
@@ -216,6 +216,6 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 # print(model.summary())
-model.fit(train_data, dummy_y, batch_size=32, epochs=100, verbose=2, validation_split=0.1)
+model.fit(train_data, dummy_y, batch_size=16, epochs=100, verbose=2, validation_split=0.1)
 
 #%%
