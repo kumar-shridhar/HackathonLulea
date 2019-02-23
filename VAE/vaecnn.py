@@ -27,6 +27,8 @@ args.cuda = not args.no_cuda and torch.cuda.is_available()
 
 torch.manual_seed(args.seed)
 
+torch.cuda.set_device(1)
+
 device = torch.device("cuda" if args.cuda else "cpu")
 
 kwargs = {'num_workers': 4, 'pin_memory': True} if args.cuda else {}
