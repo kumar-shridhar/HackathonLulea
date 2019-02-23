@@ -58,7 +58,7 @@ if opt.dataset == 'tobacco':
                                    transforms.Resize(opt.imageSize),
                                    transforms.ToTensor(),
                                ]))
-    nc=1
+    nc=3
 elif opt.dataset == 'lsun':
     dataset = dset.LSUN(root=opt.dataroot, classes=['bedroom_train'],
                         transform=transforms.Compose([
