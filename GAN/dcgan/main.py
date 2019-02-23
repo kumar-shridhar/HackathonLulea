@@ -14,7 +14,7 @@ import torchvision.utils as vutils
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', required=True, help='cifar10 | lsun | mnist |imagenet | folder | lfw | fake')
+parser.add_argument('--dataset', required=True, help='cifar10 | lsun | mnist | tobacco | fake')
 parser.add_argument('--dataroot', required=True, help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batchSize', type=int, default=64, help='input batch size')
@@ -51,16 +51,15 @@ cudnn.benchmark = True
 if torch.cuda.is_available() and not opt.cuda:
     print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
-if opt.dataset in ['imagenet', 'folder', 'lfw']:
+if opt.dataset == 'tobacco':
     # folder dataset
-    dataset = dset.ImageFolder(root=opt.dataroot,
+    dataset = dset.ImageFolder(root='../../../Datasets/Tobacco/train',
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
-                                   transforms.CenterCrop(opt.imageSize),
+                                   transforms.Grayscale(),
                                    transforms.ToTensor(),
-                                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                ]))
-    nc=3
+    nc=1
 elif opt.dataset == 'lsun':
     dataset = dset.LSUN(root=opt.dataroot, classes=['bedroom_train'],
                         transform=transforms.Compose([
