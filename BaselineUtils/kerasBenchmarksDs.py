@@ -177,15 +177,19 @@ print(train_data.shape[0], 'train samples')
 
 model = Sequential()
 # model.add(Conv2D())
-model.add(Conv2D(32, (3, 3), input_shape=(3*96, 512, 1)))
+model.add(Conv2D(32, (15, 15), input_shape=(3*96, 512, 1)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(6, 6)))
+
+model.add(Conv2D(32, (10, 10)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(3, 3)))
+
+model.add(Conv2D(32, (5, 5)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
-model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -194,9 +198,9 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 # model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-model.add(Dense(500))
+model.add(Dense(200))
 model.add(Activation('relu'))
-model.add(Dropout(0.3))
+model.add(Dropout(0.4))
 
 # model.add(Dense(400))
 # model.add(Activation('relu'))
@@ -207,11 +211,11 @@ model.add(Dropout(0.3))
 
 model.add(Dense(10))
 model.add(Activation('softmax'))
-
+print(model.summary())
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
-print(model.summary())
-model.fit(train_data, dummy_y, batch_size=64, epochs=100, verbose=2, validation_split=0.1)
+# print(model.summary())
+model.fit(train_data, dummy_y, batch_size=32, epochs=100, verbose=2, validation_split=0.1)
 
 #%%
