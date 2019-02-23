@@ -53,7 +53,7 @@ if torch.cuda.is_available() and not opt.cuda:
 
 if opt.dataset == 'tobacco':
     # folder dataset
-    dataset = dset.ImageFolder(root='../../../Datasets/Tobacco/train',
+    dataset = dset.ImageFolder(root=opt.dataroot,
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
                                    transforms.Grayscale(),
