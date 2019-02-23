@@ -136,7 +136,6 @@ class VAE(nn.Module):
 model = VAE(nc=1, ngf=224, ndf=224, latent_variable_size=500).to(device)
 
 model = torch.nn.DataParallel(model, device_ids=range(torch.cuda.device_count()))
-    cudnn.benchmark = True
   
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
