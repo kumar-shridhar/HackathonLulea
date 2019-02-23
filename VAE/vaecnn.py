@@ -198,7 +198,7 @@ if __name__ == "__main__":
         test(epoch)
         with torch.no_grad():
             sample = torch.randn(64, 100).to(device)
-            sample = model.decode(sample).cpu()
+            sample = model.decode(sample).to(device)
             save_image(sample.view(64, 1, 256, 256),
                        'results/sample_' + str(epoch) + '.png')
 
