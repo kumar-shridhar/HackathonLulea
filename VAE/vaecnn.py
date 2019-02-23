@@ -112,14 +112,10 @@ class VAE(nn.Module):
         h5 = h5.view(-1, self.ndf*8*4*4)
 
         return self.fc1(h5), self.fc2(h5)
-
-    def reparametrize(self, mu, logvar):
-        std = logvar.mul(0.5).exp_()
-        if args.cuda:
-            eps = torch.cuda.FloatTensor(std.size()).normal_()
-        else:
-            eps = torch.FloatTensor(std.size()).normal_()
-        eps = Variable(eps)
+      
+    def reparameterize(self, mu, logvar):
+        std = torch.exp(0.5*logvar)
+        eps = torch.randn_like(std)
         return eps.mul(std).add_(mu)
 
     def decode(self, z):
